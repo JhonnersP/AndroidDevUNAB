@@ -1,0 +1,62 @@
+package com.example.projectg104;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.projectg104.Entities.Product;
+import com.example.projectg104.Services.ProductService;
+
+public class ProductDetail extends AppCompatActivity {
+    //private DBHelper dbHelper;
+    private ProductService productService;
+    private Button btnProductInfo;
+    private TextView textProductName, textProductDescription, textProductPrice;
+    private ImageView imgProduct;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_productdetail);
+
+        btnProductInfo = (Button) findViewById(R.id.btnProductInfo);
+        textProductName = (TextView) findViewById(R.id.textProductName);
+        textProductPrice = (TextView) findViewById(R.id.textProductPrice);
+        textProductDescription = (TextView) findViewById(R.id.textProductDescription);
+        imgProduct = (ImageView) findViewById(R.id.imgProduct);
+        //dbHelper = new DBHelper(this);
+        productService = new ProductService();
+
+        Intent intentIn = getIntent();
+
+        Product product = new Product(
+                intentIn.getStringExtra("id"),
+                intentIn.getStringExtra("name"),
+                intentIn.getStringExtra("description"),
+                Integer.parseInt(intentIn.getStringExtra("price")),
+                intentIn.getStringExtra("image"),
+                Double.parseDouble(intentIn.getStringExtra("latitud")),
+                Double.parseDouble(intentIn.getStringExtra("longitud"))
+        );
+        //ArrayList<Product> list = productService.cursorToArray(dbHelper.getDataById(id));
+        //Product product = list.get(0);
+
+        textProductName.setText(product.getName());
+        textProductDescription.setText(product.getDescription());
+        textProductPrice.setText(String.valueOf(product.getPrice()));
+        //imgProduct.setImageBitmap(productService.byteToBitmap(product.getImage()));
+
+        btnProductInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ProductList.class);
+                startActivity(intent);
+            }
+        });
+    }
+}
