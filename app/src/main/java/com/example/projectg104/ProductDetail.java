@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.projectg104.Entities.Product;
 import com.example.projectg104.Services.ProductService;
 
 public class ProductDetail extends AppCompatActivity {
@@ -34,22 +33,12 @@ public class ProductDetail extends AppCompatActivity {
 
         Intent intentIn = getIntent();
 
-        Product product = new Product(
-                intentIn.getStringExtra("id"),
-                intentIn.getStringExtra("name"),
-                intentIn.getStringExtra("description"),
-                Integer.parseInt(intentIn.getStringExtra("price")),
-                intentIn.getStringExtra("image"),
-                Double.parseDouble(intentIn.getStringExtra("latitud")),
-                Double.parseDouble(intentIn.getStringExtra("longitud"))
-        );
-        //ArrayList<Product> list = productService.cursorToArray(dbHelper.getDataById(id));
-        //Product product = list.get(0);
 
-        textProductName.setText(product.getName());
-        textProductDescription.setText(product.getDescription());
-        textProductPrice.setText(String.valueOf(product.getPrice()));
-        //imgProduct.setImageBitmap(productService.byteToBitmap(product.getImage()));
+
+        textProductName.setText(intentIn.getStringExtra("name"));
+        textProductDescription.setText(intentIn.getStringExtra("description"));
+        textProductPrice.setText(String.valueOf(intentIn.getIntExtra("price",0)));
+        productService.insertUriToImageView(intentIn.getStringExtra("image"),imgProduct, ProductDetail.this);
 
         btnProductInfo.setOnClickListener(new View.OnClickListener() {
             @Override
